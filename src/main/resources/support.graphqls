@@ -1,0 +1,18 @@
+type SupportCase {
+    id: ID!
+    priority: String!
+    title: String!
+    text: String!
+    logMessages: [LogMessage]
+}
+
+type LogMessage {
+    id: ID!
+    txt: String
+}
+
+# The Root Queries
+type Query {
+    allSupportCases: [SupportCase]
+    someSupportCases( titleContains: String, limit: Int): [SupportCase]
+}
