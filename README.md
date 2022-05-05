@@ -180,6 +180,8 @@ response :
 
 ## GraphQL Clients
 ### Postman
+https://www.postman.com/
+
 > POST http://localhost:8081/graphql
 
 Header :
@@ -195,6 +197,8 @@ Body :
 ![img.png](postman.png)
 
 ### Altair
+https://altair.sirmuel.design/
+
 This is a realy good tool that I highly recommend
 just point the URL to : `http://localhost:8081/graphql`
 ![img.png](altair.png)
