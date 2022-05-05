@@ -1,4 +1,4 @@
-# Simple Graphql Demo with Spring Boot
+# Simple GraphQL Demo with Spring Boot
 ## Abstract / What is in the box ?
 The goal of this project is to show how easy it is to create a GraphQL application with Spring.
 Included is also a number of REST endpoints that does the same job as GraphQL to kind of show the differences
@@ -178,6 +178,37 @@ response :
 }
 ```
 
+## GraphQL Clients
+### Postman
+> POST http://localhost:8081/graphql
+
+Header :
+>Content-Type : application/json 
+
+Body :
+```
+{
+    "query": "query allCases { allSupportCases { title } }" 
+}
+```
+
+![img.png](postman.png)
+
+### Altair
+This is a realy good tool that I highly recommend
+just point the URL to : `http://localhost:8081/graphql`
+![img.png](altair.png)
+
+### Making http calls from Java
+```java
+public static void main(String[] args) throws IOException, InterruptedException {
+        String response = HTTPUtils.get("http://localhost:8081/api/support-case");
+        System.out.println(response);
+        String graphqlQuery = "{\n" + "    \"query\": \"query allCases { allSupportCases { title } }\" \n" + "}";
+        String graphqlResponse = HTTPUtils.post("http://localhost:8081/graphql", graphqlQuery);
+        System.out.println(graphqlResponse);
+    }
+```
 
 ## Classes and Design
 The Spring Boot application can be found in App.java
