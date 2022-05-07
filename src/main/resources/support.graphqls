@@ -16,3 +16,12 @@ type Query {
     allSupportCases: [SupportCase]
     someSupportCases( titleContains: String, limit: Int): [SupportCase]
 }
+
+input LogMessageInput {
+    belongToCase: ID!
+    txt: String
+}
+
+type Mutation {
+    addLogMessage( logMessage: LogMessageInput! ) : LogMessage
+}

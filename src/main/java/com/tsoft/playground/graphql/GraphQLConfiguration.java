@@ -44,6 +44,7 @@ public class GraphQLConfiguration {
                                         graphQLDataFetchers.someSupportCases()))
                         .type(newTypeWiring("SupportCase").dataFetcher("logMessages",
                                         graphQLDataFetchers.logMessages()))
+                        .type(newTypeWiring("Mutation").dataFetcher("addLogMessage",graphQLDataFetchers.addLogMessage()))
                         .build();
     }
 

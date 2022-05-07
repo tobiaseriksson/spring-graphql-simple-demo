@@ -32,6 +32,11 @@ type Query {
     allSupportCases: [SupportCase]
     someSupportCases( titleContains: String, limit: Int): [SupportCase]
 }
+
+
+type Mutation {
+    addLogMessage( logMessage: LogMessageInput! ) : LogMessage
+}
 ```
 
 ### Sample queries
@@ -178,6 +183,22 @@ response :
 }
 ```
 
+## Mutation Samples
+
+### Add Log Message
+
+```
+mutation logMessage {
+  addLogMessage(logMessage: {
+    belongToCase: "3"
+    txt: "this is a new log message"
+  }) {
+    id
+    txt
+  }
+}
+```
+
 ## GraphQL Clients
 ### Postman
 https://www.postman.com/
@@ -204,6 +225,7 @@ just point the URL to : `http://localhost:8081/graphql`
 ![img.png](altair.png)
 
 ### Making http calls from Java
+Here we are using the com.squareup.okhttp3 to make the http queries from java.
 ```java
 public static void main(String[] args) throws IOException, InterruptedException {
         String response = HTTPUtils.get("http://localhost:8081/api/support-case");

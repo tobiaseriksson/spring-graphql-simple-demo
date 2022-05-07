@@ -4,6 +4,7 @@ import graphql.schema.DataFetcher;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import java.util.HashMap;
 import java.util.Map;
 import java.util.stream.Collectors;
 
@@ -49,4 +50,18 @@ public class GraphQLDataFetchers {
         };
     }
 
+    public DataFetcher addLogMessage() {
+        return dataFetchingEnvironment -> {
+            HashMap<String,Object> map = dataFetchingEnvironment.getArgument("logMessage");
+            LogMessageInput logMessageInput = new LogMessageInput(map);
+            if( logMessageInput == null ) {
+                throw new Exception("You need to provide a log message!");
+            }
+            SupportCase supportCase = supportCaseDAO.getById(logMessageInput.belongToCase);
+            if( supportCase == null ){
+                throw new Exception("The Support Case with ID "+logMessageInput.belongToCase+" does not exist!");
+            }
+            return logMessageDAO.add(logMessageInput);
+        };
+    }
 }
