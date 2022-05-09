@@ -5,23 +5,44 @@ import com.tsoft.playground.graphql.SupportCase;
 
 import java.util.List;
 import java.util.Random;
+import java.util.UUID;
+import java.util.concurrent.atomic.AtomicInteger;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
 public class GenerateLotsOfData {
 
+    private static volatile AtomicInteger counter = new AtomicInteger(0);
+
     public GenerateLotsOfData() {
 
     }
 
+    public static SupportCase generateRandom() {
+        String[] priorityList = {"High","Medium","Low"};
+        int r = new Random().nextInt(priorityList.length);
+        String id = UUID.randomUUID().toString();
+        String priority = priorityList[r];
+        int c = counter.incrementAndGet();
+        String title = "Need to fix problem #"+c;
+        String txt = "lorem ipsum";
+        return new SupportCase(id,priority,title,txt);
+    }
+
+    public static LogMessage generateRandom(String supportCaseId) {
+        int currentCount = counter.incrementAndGet();
+        String id = UUID.randomUUID().toString();
+        return new LogMessage(id,"lorem ipsum "+currentCount,supportCaseId);
+    }
+
     public List<SupportCase> generateSupportCases(int howMany){
-        return IntStream.range(0,howMany).mapToObj(n -> SupportCase.generateRandom() ).collect(Collectors.toList());
+        return IntStream.range(0,howMany).mapToObj(n -> generateRandom() ).collect(Collectors.toList());
     }
 
     public List<LogMessage> generateLogMessagesForSupportCases( List<SupportCase> cases) {
         List<LogMessage> msgs = cases.stream().map( c -> {
             int numberOfLogMessages = new Random().nextInt(20);
-            return IntStream.range(0,numberOfLogMessages).mapToObj(n -> LogMessage.generateRandom( c.getId() ) ).collect(
+            return IntStream.range(0,numberOfLogMessages).mapToObj(n -> generateRandom( c.getId() ) ).collect(
                             Collectors.toList());
         }).flatMap( l -> l.stream() ).collect(Collectors.toList());
         return msgs;

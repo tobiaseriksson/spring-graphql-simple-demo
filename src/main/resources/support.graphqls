@@ -12,7 +12,7 @@ type LogMessage {
 }
 
 type Query {
-    # This will return ALL the Suppor Cases there are
+    # This will return ALL the Support Cases there are
     allSupportCases: [SupportCase]
     # This will return a subset of the Support Cases based on title contains
     # and/or the limit parameter
