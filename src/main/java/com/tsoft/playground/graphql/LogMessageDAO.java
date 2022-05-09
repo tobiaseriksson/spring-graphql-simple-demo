@@ -40,7 +40,7 @@ public class LogMessageDAO {
         return logMessages.values().stream().collect(Collectors.toList());
     }
 
-    public LogMessage add(LogMessageInput logMessageInput){
+    public synchronized LogMessage add(LogMessageInput logMessageInput){
         int max = logMessages.keySet().stream().mapToInt(v -> v).max().orElseThrow();
         LogMessage logMessage =  new LogMessage(""+(max + 1), logMessageInput.txt, logMessageInput.belongToCase);
         logMessages.put( max + 1, logMessage);

@@ -26,7 +26,8 @@ public class GenerateLotsOfData {
         int c = counter.incrementAndGet();
         String title = "Need to fix problem #"+c;
         String txt = "lorem ipsum";
-        return new SupportCase(id,priority,title,txt);
+        String email = "abc@gmail.com";
+        return new SupportCase(id,priority,title,txt,email);
     }
 
     public static LogMessage generateRandom(String supportCaseId) {

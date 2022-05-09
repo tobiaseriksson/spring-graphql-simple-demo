@@ -1,0 +1,61 @@
+# Welcome to Altair GraphQL Client.
+# You can send your request using CmdOrCtrl + Enter.
+
+# Enter your graphQL query here.
+query allCasesAndLogMessages {
+  allSupportCases {
+    id
+    priority
+    title
+    logMessages {
+      txt
+    }
+  }
+}
+
+query allCases {
+  allSupportCases {
+    id
+    title
+  }
+}
+
+query justThisCase {
+  supportCase(id: "3") {
+    id
+    title
+    priority
+    email
+  }
+}
+
+query onlySome {
+  someSupportCases(titleContains:"log",limit:2) {
+    priority
+    title
+  }
+}
+
+mutation logMessage {
+  addLogMessage(logMessage: {
+    belongToCase: "7"
+    txt: "nytt log meddelande"
+  }) {
+    id
+    txt
+  }
+}
+
+
+mutation addCase {
+  addSupportCase( case : {
+    title: "Lots of problems"
+    text: "wow what a proble"
+    priority: "10"
+    email: "leeam.neeson@hollywood.com"
+  }) {
+    id
+    title
+  }
+}
+

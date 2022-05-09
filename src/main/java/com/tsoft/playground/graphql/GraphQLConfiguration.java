@@ -40,11 +40,16 @@ public class GraphQLConfiguration {
         RuntimeWiring.Builder wiring = RuntimeWiring.newRuntimeWiring();
         return wiring
                         .type(newTypeWiring("Query").dataFetcher("allSupportCases", graphQLDataFetchers.allSupportCases()))
+                        .type(newTypeWiring("Query").dataFetcher("supportCase",
+                                        graphQLDataFetchers.supportCase()))
                         .type(newTypeWiring("Query").dataFetcher("someSupportCases",
                                         graphQLDataFetchers.someSupportCases()))
                         .type(newTypeWiring("SupportCase").dataFetcher("logMessages",
                                         graphQLDataFetchers.logMessages()))
                         .type(newTypeWiring("Mutation").dataFetcher("addLogMessage",graphQLDataFetchers.addLogMessage()))
+                        .type(newTypeWiring("Mutation").dataFetcher("addSupportCase",
+                                        graphQLDataFetchers.addSupportCase()))
+                        .scalar( EmailScalar.EMAIL )
                         .build();
     }
 

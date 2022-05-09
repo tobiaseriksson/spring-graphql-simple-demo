@@ -4,19 +4,14 @@ type SupportCase {
     title: String!
     text: String!
     logMessages: [LogMessage]
+    email: Email
 }
+
+scalar Email
 
 type LogMessage {
     id: ID!
     txt: String
-}
-
-type Query {
-    # This will return ALL the Support Cases there are
-    allSupportCases: [SupportCase]
-    # This will return a subset of the Support Cases based on title contains
-    # and/or the limit parameter
-    someSupportCases( titleContains: String, limit: Int): [SupportCase]
 }
 
 input LogMessageInput {
@@ -24,7 +19,25 @@ input LogMessageInput {
     txt: String
 }
 
+input SupportCaseInput {
+    priority: String!
+    title: String!
+    text: String!
+    email: Email
+}
+
+type Query {
+    # Returns SupportCase with id
+    supportCase( id: ID! ): SupportCase
+    # This will return ALL the Support Cases there are
+    allSupportCases: [SupportCase]
+    # This will return a subset of the Support Cases based on title contains
+    # and/or the limit parameter
+    someSupportCases( titleContains: String, limit: Int): [SupportCase]
+}
+
 type Mutation {
     # Add a Log Message to a particular Support Case
     addLogMessage( logMessage: LogMessageInput! ) : LogMessage
+    addSupportCase( case: SupportCaseInput! ) : SupportCase
 }
