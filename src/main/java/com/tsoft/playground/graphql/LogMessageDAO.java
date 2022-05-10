@@ -1,31 +1,31 @@
 package com.tsoft.playground.graphql;
 
+import com.tsoft.playground.dataGenerator.FakeDatabase;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
+
+import java.time.ZonedDateTime;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import java.util.OptionalInt;
+import java.util.UUID;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.stream.Collectors;
 
+@Component
 public class LogMessageDAO {
 
-    private Map<Integer,LogMessage> logMessages;
-
-    AtomicInteger logIdGenerator = new AtomicInteger();
+    @Autowired
+    private FakeDatabase database;
 
     public LogMessageDAO() {
-        logMessages = new HashMap<>();
-        logMessages.put( 1, new LogMessage("1", "It is all black", "1"));
-        logMessages.put( 2, new LogMessage("2", "there is a spinning wheel ...", "2"));
-        logMessages.put( 3, new LogMessage("3", "hmmm it has been 35 min and still spinning","2"));
-        logMessages.put( 4, new LogMessage("4", "IT HAS BEEN 2 hours, and still not working","2"));
-        logMessages.put( 5, new LogMessage("5", "need access to Kreml super secret vault","6"));
     }
 
     public LogMessage getById(String id) {
-        return logMessages.get(id);
+        return database.logMessages.get(id);
     }
 
     public List<LogMessage> getBySupportCase(SupportCase supportCase) {
@@ -33,17 +33,19 @@ public class LogMessageDAO {
     }
 
     public List<LogMessage> getBySupportCase(String supportCaseId) {
-        return logMessages.values().stream().filter( p -> p.supportCaseId.equals(supportCaseId) ).collect(Collectors.toList());
+        return database.logMessages.values().stream().filter( p -> p.supportCaseId.equals(supportCaseId) ).collect(Collectors.toList());
     }
 
     public List<LogMessage> all() {
-        return logMessages.values().stream().collect(Collectors.toList());
+        return database.logMessages.values().stream().collect(Collectors.toList());
     }
 
     public synchronized LogMessage add(LogMessageInput logMessageInput){
-        int max = logMessages.keySet().stream().mapToInt(v -> v).max().orElseThrow();
-        LogMessage logMessage =  new LogMessage(""+(max + 1), logMessageInput.txt, logMessageInput.belongToCase);
-        logMessages.put( max + 1, logMessage);
+        String id = UUID.randomUUID().toString();
+        ZonedDateTime now = ZonedDateTime.now();
+        LogMessage logMessage =  new LogMessage(id, logMessageInput.txt, logMessageInput.belongToCase,
+                        logMessageInput.createdBy,now.toString());
+        database.logMessages.put(logMessage.getId(),logMessage);
         return logMessage;
     }
 

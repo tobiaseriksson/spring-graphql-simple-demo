@@ -3,20 +3,43 @@ type SupportCase {
     priority: String!
     title: String!
     text: String!
-    logMessages: [LogMessage]
+    logMessages(limit:Int): [LogMessage]
     email: Email
+    createdDate: String
+    createdBy: User
+    status: String
+}
+
+type User {
+    id: ID!
+    firstname: String
+    lastname: String
+    homeAddress: Address
+    email: Email
+    supportCases(limit:Int): [SupportCase]
+}
+
+type Address {
+    id: ID!
+    country: String
+    city: String
+    postalCode: String
+    street: String
 }
 
 scalar Email
 
 type LogMessage {
     id: ID!
+    createdDate: String
+    createdBy: User
     txt: String
 }
 
 input LogMessageInput {
-    belongToCase: ID!
     txt: String
+    belongToCase: ID!
+    createdBy: ID!
 }
 
 input SupportCaseInput {
@@ -24,9 +47,12 @@ input SupportCaseInput {
     title: String!
     text: String!
     email: Email
+    createdBy: ID!
 }
 
 type Query {
+    user(id:ID!):User
+    allUsers(limit:Int):[User]
     # Returns SupportCase with id
     supportCase( id: ID! ): SupportCase
     # This will return ALL the Support Cases there are

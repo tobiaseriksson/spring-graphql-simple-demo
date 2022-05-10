@@ -1,8 +1,9 @@
 package com.tsoft.playground.controllers;
 
-import com.tsoft.playground.graphql.DAOHelper;
 import com.tsoft.playground.graphql.LogMessage;
+import com.tsoft.playground.graphql.LogMessageDAO;
 import com.tsoft.playground.graphql.SupportCase;
+import com.tsoft.playground.graphql.SupportCaseDAO;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,8 +19,6 @@ import org.springframework.web.method.HandlerMethod;
 import org.springframework.web.servlet.mvc.method.RequestMappingInfo;
 import org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerMapping;
 
-import javax.websocket.server.PathParam;
-import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -31,7 +30,10 @@ public class RestEndpoints implements ApplicationListener<ContextRefreshedEvent>
     private Logger LOGGER = LoggerFactory.getLogger(this.getClass());
 
     @Autowired
-    private DAOHelper daoHelper;
+    private SupportCaseDAO supportCaseDAO;
+
+    @Autowired
+    private LogMessageDAO logMessageDAO;
 
     public RestEndpoints() {
     }
@@ -41,22 +43,22 @@ public class RestEndpoints implements ApplicationListener<ContextRefreshedEvent>
         if(id==null) {
             return null;
         }
-        return daoHelper.supportCaseDAO().getById(id.toString());
+        return supportCaseDAO.getById(id.toString());
     }
 
     @GetMapping("/support-case")
     public List<SupportCase> supportCasesByTitle(@RequestParam(required = false, value="title-contains")String titleContains) {
         if( titleContains != null ) {
-            return daoHelper.supportCaseDAO().all().stream().filter( c -> c.getTitle().toLowerCase().contains(titleContains)).collect(
+            return supportCaseDAO.all().stream().filter( c -> c.getTitle().toLowerCase().contains(titleContains)).collect(
                             Collectors.toList());
         } else {
-            return daoHelper.supportCaseDAO().all();
+            return supportCaseDAO.all();
         }
     }
 
     @GetMapping("/support-case/{id}/log-messages")
     public List<LogMessage> logMessagesForCase(@PathVariable(value="id") String id) {
-        return daoHelper.logMessageDAO().getBySupportCase(id);
+        return logMessageDAO.getBySupportCase(id);
     }
 
     @Override

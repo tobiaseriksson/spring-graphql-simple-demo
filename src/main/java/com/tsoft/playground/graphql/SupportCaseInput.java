@@ -5,6 +5,16 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
 
+/**
+ *
+ input SupportCaseInput {
+     priority: String!
+     title: String!
+     text: String!
+     email: Email
+     createdBy: ID!
+ }
+ */
 @Data
 @ToString
 @AllArgsConstructor
@@ -14,4 +24,5 @@ public class SupportCaseInput {
     String title;
     String text;
     String email;
+    String createdBy;
 }

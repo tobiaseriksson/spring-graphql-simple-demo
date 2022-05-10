@@ -2,6 +2,44 @@
 # You can send your request using CmdOrCtrl + Enter.
 
 # Enter your graphQL query here.
+
+query allUsers {
+  allUsers(limit:3) {
+    id
+    firstname
+    lastname
+    homeAddress {
+      id
+      city
+    }
+    supportCases {
+      id
+      title
+      priority
+      status
+    }
+  }
+}
+
+query userX {
+  user(id: "88") {
+    firstname
+    lastname
+    supportCases(limit: 20) {
+      id
+      createdDate
+      title
+      priority
+      status
+      email
+      logMessages {
+        txt
+        createdDate
+      }
+    }
+  }
+}
+
 query allCasesAndLogMessages {
   allSupportCases {
     id
@@ -9,7 +47,15 @@ query allCasesAndLogMessages {
     title
     logMessages {
       txt
+      createdBy {
+        firstname
+        lastname
+        homeAddress {
+          city
+        }
+      }
     }
+
   }
 }
 
@@ -38,7 +84,8 @@ query onlySome {
 
 mutation logMessage {
   addLogMessage(logMessage: {
-    belongToCase: "7"
+    belongToCase: "fbb6e53f-d349-4877-be3a-fb75fbc1950e"
+    createdBy: "10"
     txt: "nytt log meddelande"
   }) {
     id
@@ -46,13 +93,13 @@ mutation logMessage {
   }
 }
 
-
 mutation addCase {
   addSupportCase( case : {
+    createdBy: "88"
     title: "Lots of problems"
-    text: "wow what a proble"
-    priority: "10"
-    email: "leeam.neeson@hollywood.com"
+    text: "wow what a problem, crazy"
+    priority: "High"
+    email: "liam.neeson@hollywood.com"
   }) {
     id
     title

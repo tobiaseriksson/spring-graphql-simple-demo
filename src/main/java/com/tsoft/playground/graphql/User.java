@@ -6,21 +6,22 @@ import lombok.NoArgsConstructor;
 import lombok.ToString;
 
 /**
- * type LogMessage {
- *     id: ID!
- *     createdDate: String
- *     createdBy: User
- *     txt: String
+ * type User {
+ * id: ID!
+ * firstname: String
+ * lastname: String
+ * homeAddress: Address
+ * email: Email
  * }
  */
 @Data
-@ToString
 @AllArgsConstructor
 @NoArgsConstructor
-public class LogMessage {
+@ToString
+public class User {
     String id;
-    String txt;
-    String supportCaseId;
-    String userId;
-    String createdDate;
+    String firstname;
+    String lastname;
+    String homeAddress;
+    String email;
 }

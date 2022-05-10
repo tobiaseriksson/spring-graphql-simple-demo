@@ -13,9 +13,11 @@ import java.util.concurrent.atomic.AtomicInteger;
  *
  * The GraphQL Schema
  *
+ *
  * input LogMessageInput {
- *   belongToCase: ID!
  *   txt: String
+ *   belongToCase: ID!
+ *   createdBy: ID!
  * }
  *
  *
@@ -27,11 +29,5 @@ import java.util.concurrent.atomic.AtomicInteger;
 public class LogMessageInput {
     String txt;
     String belongToCase;
-
-    public LogMessageInput(HashMap<String, Object> map) {
-        this.txt = (String) map.get("txt");
-        this.belongToCase = (String) map.get("belongToCase");
-    }
-
-
+    String createdBy;
 }

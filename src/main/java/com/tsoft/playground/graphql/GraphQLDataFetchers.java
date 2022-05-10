@@ -6,7 +6,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import java.util.HashMap;
-import java.util.Map;
 import java.util.stream.Collectors;
 
 @Component
@@ -18,6 +17,12 @@ public class GraphQLDataFetchers {
     @Autowired
     private LogMessageDAO logMessageDAO;
 
+    @Autowired
+    private AddressDAO addressDAO;
+
+    @Autowired
+    private UserDAO userDAO;
+
     public DataFetcher allSupportCases() {
         return dataFetchingEnvironment -> {
             return supportCaseDAO.all()
@@ -26,11 +31,16 @@ public class GraphQLDataFetchers {
         };
     }
 
-    public DataFetcher logMessages() {
+    public DataFetcher logMessagesFromSupportCase() {
         return dataFetchingEnvironment -> {
+            Integer limit = dataFetchingEnvironment.getArgument("limit");
+            int max = 1000;
+            if( limit != null ) {
+                max = limit;
+            }
             SupportCase supportCase = dataFetchingEnvironment.getSource();
             String supportCaseId = supportCase.getId();
-            return logMessageDAO.getBySupportCase(supportCaseId);
+            return logMessageDAO.getBySupportCase(supportCaseId).stream().limit(max);
         };
     }
 
@@ -81,6 +91,61 @@ public class GraphQLDataFetchers {
                 throw new Exception("You need to provide a support case!");
             }
             return supportCaseDAO.add(supportCaseInput);
+        };
+    }
+
+    public DataFetcher allUsers() {
+        return dataFetchingEnvironment -> {
+            Integer limit = dataFetchingEnvironment.getArgument("limit");
+            int max = 1000;
+            if( limit != null ) {
+                max = limit;
+            }
+            return userDAO.all().stream().limit(max);
+        };
+    }
+
+    public DataFetcher user() {
+        return dataFetchingEnvironment -> {
+            String id = dataFetchingEnvironment.getArgument("id");
+            return userDAO.getById(id);
+        };
+    }
+
+    public DataFetcher addressFromUser() {
+        return dataFetchingEnvironment -> {
+            User user = dataFetchingEnvironment.getSource();
+            String addressId = user.getHomeAddress();
+            return addressDAO.getById(addressId);
+        };
+    }
+
+    public DataFetcher userFromCase() {
+        return dataFetchingEnvironment -> {
+            SupportCase caze = dataFetchingEnvironment.getSource();
+            String userId = caze.getCreatedBy();
+            return userDAO.getById(userId);
+        };
+    }
+
+    public DataFetcher userFromLogMessage() {
+        return dataFetchingEnvironment -> {
+            LogMessage logMessage = dataFetchingEnvironment.getSource();
+            String userId = logMessage.getUserId();
+            return userDAO.getById(userId);
+        };
+    }
+
+    public DataFetcher supportCasesFromUser() {
+        return dataFetchingEnvironment -> {
+            Integer limit = dataFetchingEnvironment.getArgument("limit");
+            int max = 1000;
+            if( limit != null ) {
+                max = limit;
+            }
+            User user = dataFetchingEnvironment.getSource();
+            String userId = user.getId();
+            return supportCaseDAO.all().stream().filter( caze -> caze.createdBy.equals(userId) ).limit(max);
         };
     }
 }
