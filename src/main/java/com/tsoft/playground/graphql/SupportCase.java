@@ -6,15 +6,15 @@ import lombok.ToString;
 
 /**
  * type SupportCase {
- *     id: ID!
- *     priority: String!
- *     title: String!
- *     text: String!
- *     logMessages: [LogMessage]
- *     email: Email
- *     createdDate: String
- *     createdBy: User
- *     status: String
+ * id: ID!
+ * priority: String!
+ * title: String!
+ * text: String!
+ * logMessages: [LogMessage]
+ * email: Email
+ * createdDate: String
+ * createdBy: User
+ * status: String
  * }
  */
 @Data
@@ -22,11 +22,18 @@ import lombok.ToString;
 @AllArgsConstructor
 public class SupportCase {
     String id;
+
     String priority;
+
     String title;
+
     String text;
+
     String email;
+
     String createdDate;
+
     String createdBy;
+
     String status;
 }

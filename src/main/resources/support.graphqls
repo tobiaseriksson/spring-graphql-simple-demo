@@ -46,7 +46,7 @@ input SupportCaseInput {
     priority: String!
     title: String!
     text: String!
-    email: Email
+    email: Email!
     createdBy: ID!
 }
 

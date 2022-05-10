@@ -20,8 +20,12 @@ import lombok.ToString;
 @ToString
 public class User {
     String id;
+
     String firstname;
+
     String lastname;
+
     String homeAddress;
+
     String email;
 }

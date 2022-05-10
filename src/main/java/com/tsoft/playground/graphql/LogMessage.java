@@ -7,10 +7,10 @@ import lombok.ToString;
 
 /**
  * type LogMessage {
- *     id: ID!
- *     createdDate: String
- *     createdBy: User
- *     txt: String
+ * id: ID!
+ * createdDate: String
+ * createdBy: User
+ * txt: String
  * }
  */
 @Data
@@ -19,8 +19,12 @@ import lombok.ToString;
 @NoArgsConstructor
 public class LogMessage {
     String id;
+
     String txt;
+
     String supportCaseId;
+
     String userId;
+
     String createdDate;
 }

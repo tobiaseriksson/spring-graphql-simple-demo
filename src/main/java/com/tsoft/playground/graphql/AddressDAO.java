@@ -20,7 +20,7 @@ public class AddressDAO {
         return database.addresses.values().stream().collect(Collectors.toList());
     }
 
-    public Address getById(String id){
+    public Address getById(String id) {
         return database.addresses.get(id);
     }
 

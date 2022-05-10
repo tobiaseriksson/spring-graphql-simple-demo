@@ -27,7 +27,7 @@ import java.util.stream.Collectors;
 @RequestMapping("/api/")
 public class RestEndpoints implements ApplicationListener<ContextRefreshedEvent> {
 
-    private Logger LOGGER = LoggerFactory.getLogger(this.getClass());
+    private final Logger LOGGER = LoggerFactory.getLogger(this.getClass());
 
     @Autowired
     private SupportCaseDAO supportCaseDAO;
@@ -39,25 +39,28 @@ public class RestEndpoints implements ApplicationListener<ContextRefreshedEvent>
     }
 
     @GetMapping("/support-case/{id}")
-    public SupportCase supportCases(@PathVariable(value="id") Integer id) {
-        if(id==null) {
+    public SupportCase supportCases(@PathVariable(value = "id") Integer id) {
+        if (id == null) {
             return null;
         }
         return supportCaseDAO.getById(id.toString());
     }
 
     @GetMapping("/support-case")
-    public List<SupportCase> supportCasesByTitle(@RequestParam(required = false, value="title-contains")String titleContains) {
-        if( titleContains != null ) {
-            return supportCaseDAO.all().stream().filter( c -> c.getTitle().toLowerCase().contains(titleContains)).collect(
-                            Collectors.toList());
+    public List<SupportCase> supportCasesByTitle(
+                    @RequestParam(required = false, value = "title-contains") String titleContains) {
+        if (titleContains != null) {
+            return supportCaseDAO.all()
+                            .stream()
+                            .filter(c -> c.getTitle().toLowerCase().contains(titleContains))
+                            .collect(Collectors.toList());
         } else {
             return supportCaseDAO.all();
         }
     }
 
     @GetMapping("/support-case/{id}/log-messages")
-    public List<LogMessage> logMessagesForCase(@PathVariable(value="id") String id) {
+    public List<LogMessage> logMessagesForCase(@PathVariable(value = "id") String id) {
         return logMessageDAO.getBySupportCase(id);
     }
 
@@ -68,10 +71,9 @@ public class RestEndpoints implements ApplicationListener<ContextRefreshedEvent>
          */
         LOGGER.info(" API Endpoints : ");
         ApplicationContext applicationContext = event.getApplicationContext();
-        RequestMappingHandlerMapping requestMappingHandlerMapping = applicationContext
-                .getBean("requestMappingHandlerMapping", RequestMappingHandlerMapping.class);
-        Map<RequestMappingInfo, HandlerMethod> map = requestMappingHandlerMapping
-                .getHandlerMethods();
+        RequestMappingHandlerMapping requestMappingHandlerMapping = applicationContext.getBean(
+                        "requestMappingHandlerMapping", RequestMappingHandlerMapping.class);
+        Map<RequestMappingInfo, HandlerMethod> map = requestMappingHandlerMapping.getHandlerMethods();
         map.forEach((key, value) -> LOGGER.info("{} ", key));
     }
 }

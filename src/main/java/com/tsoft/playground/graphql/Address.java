@@ -6,13 +6,13 @@ import lombok.NoArgsConstructor;
 import lombok.ToString;
 
 /**
-type Address {
-    id: ID!
-    country: String
-    city: String
-    postalCode: String
-    street: String
-}
+ * type Address {
+ * id: ID!
+ * country: String
+ * city: String
+ * postalCode: String
+ * street: String
+ * }
  **/
 @Data
 @AllArgsConstructor
@@ -20,8 +20,12 @@ type Address {
 @ToString
 public class Address {
     String id;
+
     String country;
+
     String city;
+
     String postalCode;
+
     String street;
 }

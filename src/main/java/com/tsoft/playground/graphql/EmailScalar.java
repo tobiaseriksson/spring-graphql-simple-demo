@@ -63,8 +63,6 @@ public class EmailScalar {
                 return possibleEmailValue;
             }
         }
-        throw new CoercingParseLiteralException(
-                        "Value is not any email address : '" + String.valueOf(input) + "'"
-        );
+        throw new CoercingParseLiteralException("Value is not any email address : '" + input + "'");
     }
 }

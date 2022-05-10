@@ -25,9 +25,7 @@ public class GraphQLDataFetchers {
 
     public DataFetcher allSupportCases() {
         return dataFetchingEnvironment -> {
-            return supportCaseDAO.all()
-                    .stream()
-                    .collect(Collectors.toList());
+            return supportCaseDAO.all().stream().collect(Collectors.toList());
         };
     }
 
@@ -35,7 +33,7 @@ public class GraphQLDataFetchers {
         return dataFetchingEnvironment -> {
             Integer limit = dataFetchingEnvironment.getArgument("limit");
             int max = 1000;
-            if( limit != null ) {
+            if (limit != null) {
                 max = limit;
             }
             SupportCase supportCase = dataFetchingEnvironment.getSource();
@@ -55,13 +53,16 @@ public class GraphQLDataFetchers {
         return dataFetchingEnvironment -> {
             Integer limit = dataFetchingEnvironment.getArgument("limit");
             int max = 1000;
-            if( limit != null ) {
+            if (limit != null) {
                 max = limit;
             }
             String titleContains = dataFetchingEnvironment.getArgument("titleContains");
-            if( titleContains != null ) {
-                return supportCaseDAO.all().stream().filter( sc -> sc.title.toLowerCase().contains(titleContains) ).limit(max).collect(
-                                Collectors.toList());
+            if (titleContains != null) {
+                return supportCaseDAO.all()
+                                .stream()
+                                .filter(sc -> sc.title.toLowerCase().contains(titleContains))
+                                .limit(max)
+                                .collect(Collectors.toList());
             } else {
                 return supportCaseDAO.all().stream().limit(max);
             }
@@ -70,24 +71,25 @@ public class GraphQLDataFetchers {
 
     public DataFetcher addLogMessage() {
         return dataFetchingEnvironment -> {
-            HashMap<String,Object> map = dataFetchingEnvironment.getArgument("logMessage");
+            HashMap<String, Object> map = dataFetchingEnvironment.getArgument("logMessage");
             LogMessageInput logMessageInput = new ObjectMapper().convertValue(map, LogMessageInput.class);
-            if( logMessageInput == null ) {
+            if (logMessageInput == null) {
                 throw new Exception("You need to provide a log message!");
             }
             SupportCase supportCase = supportCaseDAO.getById(logMessageInput.belongToCase);
-            if( supportCase == null ){
-                throw new Exception("The Support Case with ID "+logMessageInput.belongToCase+" does not exist!");
+            if (supportCase == null) {
+                throw new Exception("The Support Case with ID " + logMessageInput.belongToCase + " does not exist!");
             }
             return logMessageDAO.add(logMessageInput);
         };
     }
+
     // addSupportCase
     public DataFetcher addSupportCase() {
         return dataFetchingEnvironment -> {
-            HashMap<String,Object> map = dataFetchingEnvironment.getArgument("case");
+            HashMap<String, Object> map = dataFetchingEnvironment.getArgument("case");
             SupportCaseInput supportCaseInput = new ObjectMapper().convertValue(map, SupportCaseInput.class);
-            if( supportCaseInput == null ) {
+            if (supportCaseInput == null) {
                 throw new Exception("You need to provide a support case!");
             }
             return supportCaseDAO.add(supportCaseInput);
@@ -98,7 +100,7 @@ public class GraphQLDataFetchers {
         return dataFetchingEnvironment -> {
             Integer limit = dataFetchingEnvironment.getArgument("limit");
             int max = 1000;
-            if( limit != null ) {
+            if (limit != null) {
                 max = limit;
             }
             return userDAO.all().stream().limit(max);
@@ -140,12 +142,12 @@ public class GraphQLDataFetchers {
         return dataFetchingEnvironment -> {
             Integer limit = dataFetchingEnvironment.getArgument("limit");
             int max = 1000;
-            if( limit != null ) {
+            if (limit != null) {
                 max = limit;
             }
             User user = dataFetchingEnvironment.getSource();
             String userId = user.getId();
-            return supportCaseDAO.all().stream().filter( caze -> caze.createdBy.equals(userId) ).limit(max);
+            return supportCaseDAO.all().stream().filter(caze -> caze.createdBy.equals(userId)).limit(max);
         };
     }
 }
