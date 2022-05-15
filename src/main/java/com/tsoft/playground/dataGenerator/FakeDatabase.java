@@ -1,9 +1,9 @@
 package com.tsoft.playground.dataGenerator;
 
-import com.tsoft.playground.graphql.Address;
-import com.tsoft.playground.graphql.LogMessage;
-import com.tsoft.playground.graphql.SupportCase;
-import com.tsoft.playground.graphql.User;
+import com.tsoft.playground.graphql.data.Address;
+import com.tsoft.playground.graphql.data.LogMessage;
+import com.tsoft.playground.graphql.data.SupportCase;
+import com.tsoft.playground.graphql.data.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 

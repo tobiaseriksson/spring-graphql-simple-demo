@@ -1,6 +1,15 @@
 package com.tsoft.playground.graphql;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.tsoft.playground.graphql.dao.AddressDAO;
+import com.tsoft.playground.graphql.dao.LogMessageDAO;
+import com.tsoft.playground.graphql.dao.SupportCaseDAO;
+import com.tsoft.playground.graphql.dao.UserDAO;
+import com.tsoft.playground.graphql.data.LogMessage;
+import com.tsoft.playground.graphql.data.LogMessageInput;
+import com.tsoft.playground.graphql.data.SupportCase;
+import com.tsoft.playground.graphql.data.SupportCaseInput;
+import com.tsoft.playground.graphql.data.User;
 import graphql.schema.DataFetcher;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -60,7 +69,7 @@ public class GraphQLDataFetchers {
             if (titleContains != null) {
                 return supportCaseDAO.all()
                                 .stream()
-                                .filter(sc -> sc.title.toLowerCase().contains(titleContains))
+                                .filter(sc -> sc.getTitle().toLowerCase().contains(titleContains))
                                 .limit(max)
                                 .collect(Collectors.toList());
             } else {
@@ -76,9 +85,9 @@ public class GraphQLDataFetchers {
             if (logMessageInput == null) {
                 throw new Exception("You need to provide a log message!");
             }
-            SupportCase supportCase = supportCaseDAO.getById(logMessageInput.belongToCase);
+            SupportCase supportCase = supportCaseDAO.getById(logMessageInput.getBelongToCase());
             if (supportCase == null) {
-                throw new Exception("The Support Case with ID " + logMessageInput.belongToCase + " does not exist!");
+                throw new Exception("The Support Case with ID " + logMessageInput.getBelongToCase() + " does not exist!");
             }
             return logMessageDAO.add(logMessageInput);
         };
@@ -147,7 +156,7 @@ public class GraphQLDataFetchers {
             }
             User user = dataFetchingEnvironment.getSource();
             String userId = user.getId();
-            return supportCaseDAO.all().stream().filter(caze -> caze.createdBy.equals(userId)).limit(max);
+            return supportCaseDAO.all().stream().filter(caze -> caze.getCreatedBy().equals(userId)).limit(max);
         };
     }
 }

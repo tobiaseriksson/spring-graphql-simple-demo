@@ -1,24 +1,28 @@
-package com.tsoft.playground.graphql;
+package com.tsoft.playground.graphql.data;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
-import lombok.NoArgsConstructor;
 import lombok.ToString;
 
 /**
- * input SupportCaseInput {
+ * type SupportCase {
+ * id: ID!
  * priority: String!
  * title: String!
  * text: String!
+ * logMessages: [LogMessage]
  * email: Email
- * createdBy: ID!
+ * createdDate: String
+ * createdBy: User
+ * status: String
  * }
  */
 @Data
 @ToString
 @AllArgsConstructor
-@NoArgsConstructor
-public class SupportCaseInput {
+public class SupportCase {
+    String id;
+
     String priority;
 
     String title;
@@ -27,5 +31,9 @@ public class SupportCaseInput {
 
     String email;
 
+    String createdDate;
+
     String createdBy;
+
+    String status;
 }

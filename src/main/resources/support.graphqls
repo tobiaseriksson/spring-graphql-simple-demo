@@ -50,8 +50,11 @@ input SupportCaseInput {
     createdBy: ID!
 }
 
+
 type Query {
+    # Returns a User with id
     user(id:ID!):User
+    # Returns ALL Users, (optionally limited by limit)
     allUsers(limit:Int):[User]
     # Returns SupportCase with id
     supportCase( id: ID! ): SupportCase
@@ -61,7 +64,6 @@ type Query {
     # and/or the limit parameter
     someSupportCases( titleContains: String, limit: Int): [SupportCase]
 }
-
 
 interface DemoResponse {
     message: String

@@ -1,9 +1,9 @@
 package com.tsoft.playground.controllers;
 
-import com.tsoft.playground.graphql.LogMessage;
-import com.tsoft.playground.graphql.LogMessageDAO;
-import com.tsoft.playground.graphql.SupportCase;
-import com.tsoft.playground.graphql.SupportCaseDAO;
+import com.tsoft.playground.graphql.data.LogMessage;
+import com.tsoft.playground.graphql.dao.LogMessageDAO;
+import com.tsoft.playground.graphql.data.SupportCase;
+import com.tsoft.playground.graphql.dao.SupportCaseDAO;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;

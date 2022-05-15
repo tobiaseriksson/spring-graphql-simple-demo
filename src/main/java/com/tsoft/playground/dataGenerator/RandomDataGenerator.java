@@ -1,11 +1,11 @@
 package com.tsoft.playground.dataGenerator;
 
-import com.tsoft.playground.graphql.Address;
-import com.tsoft.playground.graphql.LogMessage;
-import com.tsoft.playground.graphql.SupportCase;
+import com.tsoft.playground.graphql.data.Address;
+import com.tsoft.playground.graphql.data.LogMessage;
+import com.tsoft.playground.graphql.data.SupportCase;
 import com.tsoft.playground.graphql.SupportCasePriority;
 import com.tsoft.playground.graphql.SupportCaseStatus;
-import com.tsoft.playground.graphql.User;
+import com.tsoft.playground.graphql.data.User;
 import com.tsoft.playground.utils.Utils;
 import org.springframework.stereotype.Service;
 
@@ -13,7 +13,6 @@ import java.time.ZonedDateTime;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Random;
-import java.util.UUID;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;

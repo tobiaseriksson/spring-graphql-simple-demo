@@ -1,6 +1,7 @@
-package com.tsoft.playground.graphql;
+package com.tsoft.playground.graphql.dao;
 
 import com.tsoft.playground.dataGenerator.FakeDatabase;
+import com.tsoft.playground.graphql.data.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 

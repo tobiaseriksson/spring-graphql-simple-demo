@@ -1,6 +1,9 @@
-package com.tsoft.playground.graphql;
+package com.tsoft.playground.graphql.dao;
 
 import com.tsoft.playground.dataGenerator.FakeDatabase;
+import com.tsoft.playground.graphql.SupportCaseStatus;
+import com.tsoft.playground.graphql.data.SupportCase;
+import com.tsoft.playground.graphql.data.SupportCaseInput;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -29,8 +32,8 @@ public class SupportCaseDAO {
     public synchronized SupportCase add(SupportCaseInput nSC) {
         String id = UUID.randomUUID().toString();
         ZonedDateTime now = ZonedDateTime.now();
-        SupportCase caze = new SupportCase(id, nSC.priority, nSC.title, nSC.text, nSC.email, now.toString(),
-                        nSC.createdBy, SupportCaseStatus.NEW.key);
+        SupportCase caze = new SupportCase(id, nSC.getPriority(), nSC.getTitle(), nSC.getText(), nSC.getEmail(), now.toString(),
+                        nSC.getCreatedBy(), SupportCaseStatus.NEW.key);
         database.supportCases.put(caze.getId(), caze);
         return caze;
     }

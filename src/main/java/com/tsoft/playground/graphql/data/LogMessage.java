@@ -1,4 +1,4 @@
-package com.tsoft.playground.graphql;
+package com.tsoft.playground.graphql.data;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
