@@ -62,8 +62,21 @@ type Query {
     someSupportCases( titleContains: String, limit: Int): [SupportCase]
 }
 
+
+interface DemoResponse {
+    message: String
+}
+type Success implements DemoResponse {
+    message: String
+}
+
+type Failure implements DemoResponse {
+    message: String
+    errorCode: Int
+}
+
 type Mutation {
     # Add a Log Message to a particular Support Case
-    addLogMessage( logMessage: LogMessageInput! ) : LogMessage
+    addLogMessage( logMessage: LogMessageInput! ) : DemoResponse
     addSupportCase( case: SupportCaseInput! ) : SupportCase
 }

@@ -37,13 +37,18 @@ public class LogMessageDAO {
         return database.logMessages.values().stream().collect(Collectors.toList());
     }
 
-    public synchronized LogMessage add(LogMessageInput logMessageInput) {
-        String id = UUID.randomUUID().toString();
+    public synchronized DemoResponse add(LogMessageInput logMessageInput) {
+        String id = database.uniqueId();
         ZonedDateTime now = ZonedDateTime.now();
+        if( logMessageInput.txt.length() < 10 ) {
+            Failure result = new Failure("You need to provide a log message that is atleast 10 characters long", 199);
+            return result;
+        }
         LogMessage logMessage = new LogMessage(id, logMessageInput.txt, logMessageInput.belongToCase,
                         logMessageInput.createdBy, now.toString());
         database.logMessages.put(logMessage.getId(), logMessage);
-        return logMessage;
+        Success result = new Success("Log message successfully added!");
+        return result;
     }
 
 }

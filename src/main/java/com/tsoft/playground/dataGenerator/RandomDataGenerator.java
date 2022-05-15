@@ -13,6 +13,7 @@ import java.time.ZonedDateTime;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Random;
+import java.util.UUID;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
@@ -80,6 +81,7 @@ public class RandomDataGenerator {
     }
 
     public String uniqueId() {
+        // String id = UUID.randomUUID().toString(); Todo: UUIDs are better unique IDs, but numbers are easier to read.
         return "" + counter.incrementAndGet();
     }
 
