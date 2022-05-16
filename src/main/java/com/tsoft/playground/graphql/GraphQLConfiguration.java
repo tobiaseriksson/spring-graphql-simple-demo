@@ -1,6 +1,7 @@
 package com.tsoft.playground.graphql;
 
 import graphql.GraphQL;
+import graphql.execution.instrumentation.tracing.TracingInstrumentation;
 import graphql.schema.GraphQLSchema;
 import graphql.schema.idl.RuntimeWiring;
 import graphql.schema.idl.SchemaGenerator;
@@ -28,7 +29,7 @@ public class GraphQLConfiguration {
 
     @Bean
     public GraphQL graphQL() throws IOException {
-        return GraphQL.newGraphQL(buildSchema(readSchema())).build();
+        return GraphQL.newGraphQL(buildSchema(readSchema())).instrumentation(new TracingInstrumentation()).build();
     }
 
     private GraphQLSchema buildSchema(String sdl) {

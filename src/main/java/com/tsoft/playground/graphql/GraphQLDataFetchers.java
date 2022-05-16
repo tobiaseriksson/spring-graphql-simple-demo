@@ -10,11 +10,14 @@ import com.tsoft.playground.graphql.data.LogMessageInput;
 import com.tsoft.playground.graphql.data.SupportCase;
 import com.tsoft.playground.graphql.data.SupportCaseInput;
 import com.tsoft.playground.graphql.data.User;
+import graphql.language.Field;
 import graphql.schema.DataFetcher;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import java.util.HashMap;
+import java.util.List;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 @Component
@@ -32,8 +35,28 @@ public class GraphQLDataFetchers {
     @Autowired
     private UserDAO userDAO;
 
+    private void processField(Field field) {
+        System.out.println(field);
+        if( field.getSelectionSet() == null || field.getSelectionSet().getSelections() == null ) {
+            return;
+        }
+        field.getSelectionSet().getSelections().stream().forEach( s -> {
+            if( s instanceof Field) {
+                Field subField = (Field) s;
+                processField(subField);
+            } else {
+                System.err.println("Found something else "+s.toString());
+            }
+        });
+
+    }
+
     public DataFetcher allSupportCases() {
         return dataFetchingEnvironment -> {
+            List<Field> fields = dataFetchingEnvironment.getMergedField().getFields();
+            fields.stream().forEach( f -> {
+                processField(f);
+            });
             return supportCaseDAO.all().stream().collect(Collectors.toList());
         };
     }

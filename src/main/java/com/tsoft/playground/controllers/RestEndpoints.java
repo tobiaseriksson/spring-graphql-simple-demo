@@ -1,9 +1,13 @@
 package com.tsoft.playground.controllers;
 
+import com.tsoft.playground.graphql.dao.AddressDAO;
+import com.tsoft.playground.graphql.dao.UserDAO;
+import com.tsoft.playground.graphql.data.Address;
 import com.tsoft.playground.graphql.data.LogMessage;
 import com.tsoft.playground.graphql.dao.LogMessageDAO;
 import com.tsoft.playground.graphql.data.SupportCase;
 import com.tsoft.playground.graphql.dao.SupportCaseDAO;
+import com.tsoft.playground.graphql.data.User;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -30,12 +34,68 @@ public class RestEndpoints implements ApplicationListener<ContextRefreshedEvent>
     private final Logger LOGGER = LoggerFactory.getLogger(this.getClass());
 
     @Autowired
+    private UserDAO userDAO;
+
+    @Autowired
+    private AddressDAO addressDAO;
+
+    @Autowired
     private SupportCaseDAO supportCaseDAO;
 
     @Autowired
     private LogMessageDAO logMessageDAO;
 
     public RestEndpoints() {
+    }
+
+    @GetMapping("/user")
+    public List<User> user(
+                    @RequestParam(required = false, value = "name-contains") String nameContains,
+                    @RequestParam(required = false, value = "limit") Integer limit) {
+        int max = 1000;
+        if( limit != null ) {
+            max = limit;
+        }
+        if (nameContains != null) {
+            return userDAO.all()
+                            .stream()
+                            .filter(c -> c.getFirstname().toLowerCase().contains(nameContains))
+                            .limit(max).collect(Collectors.toList());
+        } else {
+            return userDAO.all().stream().limit(max).collect(Collectors.toList());
+        }
+    }
+
+    @GetMapping("/user/{id}")
+    public User user(@PathVariable(value = "id") Integer id) {
+        if (id == null) {
+            return null;
+        }
+        return userDAO.getById(id.toString());
+    }
+
+    @GetMapping("/user/{id}/address")
+    public Address addressForUser(@PathVariable(value = "id") Integer id) {
+        if (id == null) {
+            return null;
+        }
+        User user =  userDAO.getById(id.toString());
+        if (user == null) {
+            return  null;
+        }
+        return addressDAO.getById( user.getHomeAddress());
+    }
+
+    @GetMapping("/address")
+    public Address addressForUser2(@RequestParam(required = true, value = "user-id") Integer userId) {
+        if (userId == null) {
+            return null;
+        }
+        User user =  userDAO.getById(userId.toString());
+        if (user == null) {
+            return  null;
+        }
+        return addressDAO.getById( user.getHomeAddress());
     }
 
     @GetMapping("/support-case/{id}")
@@ -48,14 +108,19 @@ public class RestEndpoints implements ApplicationListener<ContextRefreshedEvent>
 
     @GetMapping("/support-case")
     public List<SupportCase> supportCasesByTitle(
-                    @RequestParam(required = false, value = "title-contains") String titleContains) {
+                    @RequestParam(required = false, value = "title-contains") String titleContains,
+                    @RequestParam(required = false, value = "limit") Integer limit) {
+        int max = 1000;
+        if( limit != null ) {
+            max = limit;
+        }
         if (titleContains != null) {
             return supportCaseDAO.all()
                             .stream()
                             .filter(c -> c.getTitle().toLowerCase().contains(titleContains))
-                            .collect(Collectors.toList());
+                            .limit(max).collect(Collectors.toList());
         } else {
-            return supportCaseDAO.all();
+            return supportCaseDAO.all().stream().limit(max).collect(Collectors.toList());
         }
     }
 
@@ -67,7 +132,7 @@ public class RestEndpoints implements ApplicationListener<ContextRefreshedEvent>
     @Override
     public void onApplicationEvent(ContextRefreshedEvent event) {
         /**
-         * List all the endpoints in the log
+         * List all the endpoints
          */
         LOGGER.info(" API Endpoints : ");
         ApplicationContext applicationContext = event.getApplicationContext();

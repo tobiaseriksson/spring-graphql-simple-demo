@@ -37,7 +37,7 @@ public class FakeDatabase {
         addresses = new HashMap<>();
         supportCases = new HashMap<>();
         logMessages = new HashMap<>();
-        users = dataGenerator.generateNUsers(100).stream().collect(Collectors.toMap(User::getId, Function.identity()));
+        users = dataGenerator.generateNUsers(2000).stream().collect(Collectors.toMap(User::getId, Function.identity()));
 
         users.values().stream().forEach(user -> {
             Address address = dataGenerator.generateAddress();
