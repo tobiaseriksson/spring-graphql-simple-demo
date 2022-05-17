@@ -32,10 +32,7 @@ public class LogMessageDAO {
     }
 
     public List<LogMessage> getBySupportCase(String supportCaseId) {
-        return database.logMessages.values()
-                        .stream()
-                        .filter(p -> p.getSupportCaseId().equals(supportCaseId))
-                        .collect(Collectors.toList());
+        return database.logMessages.values().stream().filter(p -> p.getSupportCaseId().equals(supportCaseId)).collect(Collectors.toList());
     }
 
     public List<LogMessage> all() {
@@ -45,12 +42,11 @@ public class LogMessageDAO {
     public synchronized DemoResponse add(LogMessageInput logMessageInput) {
         String id = database.uniqueId();
         ZonedDateTime now = ZonedDateTime.now();
-        if( logMessageInput.getTxt().length() < 10 ) {
+        if (logMessageInput.getTxt().length() < 10) {
             Failure result = new Failure("You need to provide a log message that is atleast 10 characters long", 199);
             return result;
         }
-        LogMessage logMessage = new LogMessage(id, logMessageInput.getTxt(), logMessageInput.getBelongToCase(),
-                        logMessageInput.getCreatedBy(), now.toString());
+        LogMessage logMessage = new LogMessage(id, logMessageInput.getTxt(), logMessageInput.getBelongToCase(), logMessageInput.getCreatedBy(), now.toString());
         database.logMessages.put(logMessage.getId(), logMessage);
         Success result = new Success("Log message successfully added!");
         return result;

@@ -17,7 +17,6 @@ import org.springframework.stereotype.Component;
 
 import java.util.HashMap;
 import java.util.List;
-import java.util.Set;
 import java.util.stream.Collectors;
 
 @Component
@@ -37,15 +36,15 @@ public class GraphQLDataFetchers {
 
     private void processField(Field field) {
         System.out.println(field);
-        if( field.getSelectionSet() == null || field.getSelectionSet().getSelections() == null ) {
+        if (field.getSelectionSet() == null || field.getSelectionSet().getSelections() == null) {
             return;
         }
-        field.getSelectionSet().getSelections().stream().forEach( s -> {
-            if( s instanceof Field) {
+        field.getSelectionSet().getSelections().stream().forEach(s -> {
+            if (s instanceof Field) {
                 Field subField = (Field) s;
                 processField(subField);
             } else {
-                System.err.println("Found something else "+s.toString());
+                System.err.println("Found something else " + s.toString());
             }
         });
 
@@ -53,8 +52,9 @@ public class GraphQLDataFetchers {
 
     public DataFetcher allSupportCases() {
         return dataFetchingEnvironment -> {
+            System.out.println("*****************************");
             List<Field> fields = dataFetchingEnvironment.getMergedField().getFields();
-            fields.stream().forEach( f -> {
+            fields.stream().forEach(f -> {
                 processField(f);
             });
             return supportCaseDAO.all().stream().collect(Collectors.toList());
@@ -90,11 +90,7 @@ public class GraphQLDataFetchers {
             }
             String titleContains = dataFetchingEnvironment.getArgument("titleContains");
             if (titleContains != null) {
-                return supportCaseDAO.all()
-                                .stream()
-                                .filter(sc -> sc.getTitle().toLowerCase().contains(titleContains))
-                                .limit(max)
-                                .collect(Collectors.toList());
+                return supportCaseDAO.all().stream().filter(sc -> sc.getTitle().toLowerCase().contains(titleContains)).limit(max).collect(Collectors.toList());
             } else {
                 return supportCaseDAO.all().stream().limit(max);
             }
@@ -177,9 +173,10 @@ public class GraphQLDataFetchers {
             if (limit != null) {
                 max = limit;
             }
+            String casePriorityFilter = dataFetchingEnvironment.getArgument("priority");
             User user = dataFetchingEnvironment.getSource();
             String userId = user.getId();
-            return supportCaseDAO.all().stream().filter(caze -> caze.getCreatedBy().equals(userId)).limit(max);
+            return supportCaseDAO.all().stream().filter(caze -> caze.getCreatedBy().equals(userId)).filter(caze -> casePriorityFilter==null || caze.getPriority().equalsIgnoreCase(casePriorityFilter)).limit(max);
         };
     }
 }

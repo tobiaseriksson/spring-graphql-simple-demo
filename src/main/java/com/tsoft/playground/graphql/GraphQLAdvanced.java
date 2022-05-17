@@ -10,7 +10,7 @@ import org.springframework.stereotype.Component;
 public class GraphQLAdvanced {
     TypeResolver demoResponseTypeResolver = env -> {
         DemoResponse response = env.getObject();
-        if( response instanceof Success) {
+        if (response instanceof Success) {
             return (GraphQLObjectType) env.getSchema().getType("Success");
         } else {
             return (GraphQLObjectType) env.getSchema().getType("Failure");

@@ -25,7 +25,7 @@ public class FakeDatabase {
 
     public Map<String, Address> addresses;
 
-    private RandomDataGenerator dataGenerator;
+    private final RandomDataGenerator dataGenerator;
 
     /**
      * Prepares lots of fake data
@@ -49,8 +49,7 @@ public class FakeDatabase {
                 System.out.println(supportCase);
                 supportCases.put(supportCase.getId(), supportCase);
                 IntStream.range(0, r.nextInt(5)).forEach(x -> {
-                    LogMessage logMessage = dataGenerator.generateLogMessage(supportCase,
-                                    users.values().stream().collect(Collectors.toList()).get(r.nextInt(users.size())));
+                    LogMessage logMessage = dataGenerator.generateLogMessage(supportCase, users.values().stream().collect(Collectors.toList()).get(r.nextInt(users.size())));
                     System.out.println(logMessage);
                     logMessages.put(logMessage.getId(), logMessage);
                 });
@@ -60,6 +59,7 @@ public class FakeDatabase {
 
     /**
      * Generates a unique ID within the fake data
+     *
      * @return
      */
     public String uniqueId() {

@@ -32,8 +32,7 @@ public class SupportCaseDAO {
     public synchronized SupportCase add(SupportCaseInput nSC) {
         String id = UUID.randomUUID().toString();
         ZonedDateTime now = ZonedDateTime.now();
-        SupportCase caze = new SupportCase(id, nSC.getPriority(), nSC.getTitle(), nSC.getText(), nSC.getEmail(), now.toString(),
-                        nSC.getCreatedBy(), SupportCaseStatus.NEW.key);
+        SupportCase caze = new SupportCase(id, nSC.getPriority(), nSC.getTitle(), nSC.getText(), nSC.getEmail(), now.toString(), nSC.getCreatedBy(), SupportCaseStatus.NEW.key);
         database.supportCases.put(caze.getId(), caze);
         return caze;
     }

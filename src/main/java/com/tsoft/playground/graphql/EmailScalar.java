@@ -11,26 +11,22 @@ import java.util.regex.Pattern;
 
 public class EmailScalar {
 
-    public static final GraphQLScalarType EMAIL = GraphQLScalarType.newScalar()
-                    .name("Email")
-                    .description("A custom scalar that handles emails")
-                    .coercing(new Coercing() {
-                        @Override
-                        public Object serialize(Object dataFetcherResult) {
-                            return serializeEmail(dataFetcherResult);
-                        }
+    public static final GraphQLScalarType EMAIL = GraphQLScalarType.newScalar().name("Email").description("A custom scalar that handles emails").coercing(new Coercing() {
+        @Override
+        public Object serialize(Object dataFetcherResult) {
+            return serializeEmail(dataFetcherResult);
+        }
 
-                        @Override
-                        public Object parseValue(Object input) {
-                            return parseEmailFromVariable(input);
-                        }
+        @Override
+        public Object parseValue(Object input) {
+            return parseEmailFromVariable(input);
+        }
 
-                        @Override
-                        public Object parseLiteral(Object input) {
-                            return parseEmailFromAstLiteral(input);
-                        }
-                    })
-                    .build();
+        @Override
+        public Object parseLiteral(Object input) {
+            return parseEmailFromAstLiteral(input);
+        }
+    }).build();
 
     private static boolean looksLikeAnEmailAddress(String possibleEmailValue) {
         // ps.  I am not trying to replicate RFC-3696 clearly

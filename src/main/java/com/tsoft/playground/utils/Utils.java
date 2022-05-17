@@ -17,8 +17,6 @@ public class Utils {
 
     public static String readFileFromResources(String filename) {
         try {
-            File path = ResourceUtils.getFile("classpath:.");
-            String p = path.getAbsolutePath();
             File file = ResourceUtils.getFile("classpath:" + filename);
             return new String(Files.readAllBytes(file.toPath()));
         } catch (IOException e) {

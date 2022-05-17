@@ -1,12 +1,12 @@
 package com.tsoft.playground.controllers;
 
 import com.tsoft.playground.graphql.dao.AddressDAO;
+import com.tsoft.playground.graphql.dao.LogMessageDAO;
+import com.tsoft.playground.graphql.dao.SupportCaseDAO;
 import com.tsoft.playground.graphql.dao.UserDAO;
 import com.tsoft.playground.graphql.data.Address;
 import com.tsoft.playground.graphql.data.LogMessage;
-import com.tsoft.playground.graphql.dao.LogMessageDAO;
 import com.tsoft.playground.graphql.data.SupportCase;
-import com.tsoft.playground.graphql.dao.SupportCaseDAO;
 import com.tsoft.playground.graphql.data.User;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -49,18 +49,13 @@ public class RestEndpoints implements ApplicationListener<ContextRefreshedEvent>
     }
 
     @GetMapping("/user")
-    public List<User> user(
-                    @RequestParam(required = false, value = "name-contains") String nameContains,
-                    @RequestParam(required = false, value = "limit") Integer limit) {
+    public List<User> user(@RequestParam(required = false, value = "name-contains") String nameContains, @RequestParam(required = false, value = "limit") Integer limit) {
         int max = 1000;
-        if( limit != null ) {
+        if (limit != null) {
             max = limit;
         }
         if (nameContains != null) {
-            return userDAO.all()
-                            .stream()
-                            .filter(c -> c.getFirstname().toLowerCase().contains(nameContains))
-                            .limit(max).collect(Collectors.toList());
+            return userDAO.all().stream().filter(c -> c.getFirstname().toLowerCase().contains(nameContains)).limit(max).collect(Collectors.toList());
         } else {
             return userDAO.all().stream().limit(max).collect(Collectors.toList());
         }
@@ -79,11 +74,11 @@ public class RestEndpoints implements ApplicationListener<ContextRefreshedEvent>
         if (id == null) {
             return null;
         }
-        User user =  userDAO.getById(id.toString());
+        User user = userDAO.getById(id.toString());
         if (user == null) {
-            return  null;
+            return null;
         }
-        return addressDAO.getById( user.getHomeAddress());
+        return addressDAO.getById(user.getHomeAddress());
     }
 
     @GetMapping("/address")
@@ -91,11 +86,11 @@ public class RestEndpoints implements ApplicationListener<ContextRefreshedEvent>
         if (userId == null) {
             return null;
         }
-        User user =  userDAO.getById(userId.toString());
+        User user = userDAO.getById(userId.toString());
         if (user == null) {
-            return  null;
+            return null;
         }
-        return addressDAO.getById( user.getHomeAddress());
+        return addressDAO.getById(user.getHomeAddress());
     }
 
     @GetMapping("/support-case/{id}")
@@ -107,18 +102,13 @@ public class RestEndpoints implements ApplicationListener<ContextRefreshedEvent>
     }
 
     @GetMapping("/support-case")
-    public List<SupportCase> supportCasesByTitle(
-                    @RequestParam(required = false, value = "title-contains") String titleContains,
-                    @RequestParam(required = false, value = "limit") Integer limit) {
+    public List<SupportCase> supportCasesByTitle(@RequestParam(required = false, value = "title-contains") String titleContains, @RequestParam(required = false, value = "limit") Integer limit) {
         int max = 1000;
-        if( limit != null ) {
+        if (limit != null) {
             max = limit;
         }
         if (titleContains != null) {
-            return supportCaseDAO.all()
-                            .stream()
-                            .filter(c -> c.getTitle().toLowerCase().contains(titleContains))
-                            .limit(max).collect(Collectors.toList());
+            return supportCaseDAO.all().stream().filter(c -> c.getTitle().toLowerCase().contains(titleContains)).limit(max).collect(Collectors.toList());
         } else {
             return supportCaseDAO.all().stream().limit(max).collect(Collectors.toList());
         }
@@ -136,8 +126,7 @@ public class RestEndpoints implements ApplicationListener<ContextRefreshedEvent>
          */
         LOGGER.info(" API Endpoints : ");
         ApplicationContext applicationContext = event.getApplicationContext();
-        RequestMappingHandlerMapping requestMappingHandlerMapping = applicationContext.getBean(
-                        "requestMappingHandlerMapping", RequestMappingHandlerMapping.class);
+        RequestMappingHandlerMapping requestMappingHandlerMapping = applicationContext.getBean("requestMappingHandlerMapping", RequestMappingHandlerMapping.class);
         Map<RequestMappingInfo, HandlerMethod> map = requestMappingHandlerMapping.getHandlerMethods();
         map.forEach((key, value) -> LOGGER.info("{} ", key));
     }

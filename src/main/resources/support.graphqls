@@ -16,7 +16,7 @@ type User {
     lastname: String
     homeAddress: Address
     email: Email
-    supportCases(limit:Int): [SupportCase]
+    supportCases(limit:Int, priority:String): [SupportCase]
 }
 
 type Address {

@@ -1,10 +1,10 @@
 package com.tsoft.playground.dataGenerator;
 
+import com.tsoft.playground.graphql.SupportCasePriority;
+import com.tsoft.playground.graphql.SupportCaseStatus;
 import com.tsoft.playground.graphql.data.Address;
 import com.tsoft.playground.graphql.data.LogMessage;
 import com.tsoft.playground.graphql.data.SupportCase;
-import com.tsoft.playground.graphql.SupportCasePriority;
-import com.tsoft.playground.graphql.SupportCaseStatus;
 import com.tsoft.playground.graphql.data.User;
 import com.tsoft.playground.utils.Utils;
 import org.springframework.stereotype.Service;
@@ -20,8 +20,6 @@ import java.util.stream.IntStream;
 @Service
 public class RandomDataGenerator {
 
-    Random random = new Random();
-
     private final AtomicInteger counter = new AtomicInteger(0);
 
     private final List<String> firstNames;
@@ -34,28 +32,22 @@ public class RandomDataGenerator {
 
     private final List<String> domains;
 
+    Random random = new Random();
+
     public RandomDataGenerator() {
         String txtFirstNames = Utils.readFileFromResources("random-data-sources/firstnames_boys.txt");
         txtFirstNames = txtFirstNames + "\n" + Utils.readFileFromResources("random-data-sources/firstnames_girls.txt");
-        firstNames = Arrays.stream(txtFirstNames.split("\n"))
-                        .filter(row -> row.trim().length() > 0)
-                        .collect(Collectors.toList());
+        firstNames = Arrays.stream(txtFirstNames.split("\n")).filter(row -> row.trim().length() > 0).collect(Collectors.toList());
 
         String txtLastNames = Utils.readFileFromResources("random-data-sources/lastnames.txt");
-        lastNames = Arrays.stream(txtLastNames.split("\n"))
-                        .filter(row -> row.trim().length() > 0)
-                        .collect(Collectors.toList());
+        lastNames = Arrays.stream(txtLastNames.split("\n")).filter(row -> row.trim().length() > 0).collect(Collectors.toList());
 
         String citiesTxt = Utils.readFileFromResources("random-data-sources/städer.txt");
-        cities = Arrays.stream(citiesTxt.split("\n"))
-                        .filter(row -> row.trim().length() > 0)
-                        .collect(Collectors.toList());
+        cities = Arrays.stream(citiesTxt.split("\n")).filter(row -> row.trim().length() > 0).collect(Collectors.toList());
 
         String txtsStreetNames = Utils.readFileFromResources("random-data-sources/gatunamn_göteborg.txt");
         txtsStreetNames = txtsStreetNames + Utils.readFileFromResources("random-data-sources/gatunamn_stockholm.txt");
-        streetNames = Arrays.stream(txtsStreetNames.split("\n"))
-                        .filter(row -> row.trim().length() > 0)
-                        .collect(Collectors.toList());
+        streetNames = Arrays.stream(txtsStreetNames.split("\n")).filter(row -> row.trim().length() > 0).collect(Collectors.toList());
 
         domains = Arrays.asList("gmail.com", "hotmail.com", "bth.org", "sweden.gov", "icloud.com");
     }
@@ -135,12 +127,8 @@ public class RandomDataGenerator {
     }
 
     public SupportCase generateCaseForUser(User user) {
-        List<String> priorityList = Arrays.stream(SupportCasePriority.values())
-                        .map(e -> e.key)
-                        .collect(Collectors.toList());
-        List<String> statusList = Arrays.stream(SupportCaseStatus.values())
-                        .map(e -> e.key)
-                        .collect(Collectors.toList());
+        List<String> priorityList = Arrays.stream(SupportCasePriority.values()).map(e -> e.key).collect(Collectors.toList());
+        List<String> statusList = Arrays.stream(SupportCaseStatus.values()).map(e -> e.key).collect(Collectors.toList());
         Random r = new Random();
         String id = uniqueId(); // UUID.randomUUID().toString();
         String priority = priorityList.get(r.nextInt(priorityList.size()));
