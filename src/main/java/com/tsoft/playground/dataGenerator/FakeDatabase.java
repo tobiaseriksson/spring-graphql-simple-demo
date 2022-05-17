@@ -37,24 +37,30 @@ public class FakeDatabase {
         addresses = new HashMap<>();
         supportCases = new HashMap<>();
         logMessages = new HashMap<>();
-        users = dataGenerator.generateNUsers(2000).stream().collect(Collectors.toMap(User::getId, Function.identity()));
+        int numberOfUsers = 2000;
+        users = dataGenerator.generateNUsers(numberOfUsers).stream().collect(Collectors.toMap(User::getId, Function.identity()));
 
         users.values().stream().forEach(user -> {
             Address address = dataGenerator.generateAddress();
             user.setHomeAddress(address.getId());
-            System.out.println(user + " : " + address);
+            // System.out.println(user + " : " + address);
             addresses.put(address.getId(), address);
             IntStream.range(0, r.nextInt(5)).forEach(i -> {
                 SupportCase supportCase = dataGenerator.generateCaseForUser(user);
-                System.out.println(supportCase);
+                // System.out.println(supportCase);
                 supportCases.put(supportCase.getId(), supportCase);
                 IntStream.range(0, r.nextInt(5)).forEach(x -> {
                     LogMessage logMessage = dataGenerator.generateLogMessage(supportCase, users.values().stream().collect(Collectors.toList()).get(r.nextInt(users.size())));
-                    System.out.println(logMessage);
+                    // System.out.println(logMessage);
                     logMessages.put(logMessage.getId(), logMessage);
                 });
             });
         });
+        System.out.println("RandomDataGenerator has now generated :");
+        System.out.println("Users :"+users.keySet().size());
+        System.out.println("Addresses :"+addresses.keySet().size());
+        System.out.println("Support-Cases :"+supportCases.keySet().size());
+        System.out.println("Log-Messages :"+logMessages.keySet().size());
     }
 
     /**

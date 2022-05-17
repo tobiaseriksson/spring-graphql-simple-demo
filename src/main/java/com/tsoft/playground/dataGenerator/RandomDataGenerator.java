@@ -34,19 +34,21 @@ public class RandomDataGenerator {
 
     Random random = new Random();
 
+    Utils utils = new Utils();
+
     public RandomDataGenerator() {
-        String txtFirstNames = Utils.readFileFromResources("random-data-sources/firstnames_boys.txt");
-        txtFirstNames = txtFirstNames + "\n" + Utils.readFileFromResources("random-data-sources/firstnames_girls.txt");
+        String txtFirstNames = utils.readFileFromResources("random-data-sources/firstnames_boys.txt");
+        txtFirstNames = txtFirstNames + "\n" + utils.readFileFromResources("random-data-sources/firstnames_girls.txt");
         firstNames = Arrays.stream(txtFirstNames.split("\n")).filter(row -> row.trim().length() > 0).collect(Collectors.toList());
 
-        String txtLastNames = Utils.readFileFromResources("random-data-sources/lastnames.txt");
+        String txtLastNames = utils.readFileFromResources("random-data-sources/lastnames.txt");
         lastNames = Arrays.stream(txtLastNames.split("\n")).filter(row -> row.trim().length() > 0).collect(Collectors.toList());
 
-        String citiesTxt = Utils.readFileFromResources("random-data-sources/städer.txt");
+        String citiesTxt = utils.readFileFromResources("random-data-sources/städer.txt");
         cities = Arrays.stream(citiesTxt.split("\n")).filter(row -> row.trim().length() > 0).collect(Collectors.toList());
 
-        String txtsStreetNames = Utils.readFileFromResources("random-data-sources/gatunamn_göteborg.txt");
-        txtsStreetNames = txtsStreetNames + Utils.readFileFromResources("random-data-sources/gatunamn_stockholm.txt");
+        String txtsStreetNames = utils.readFileFromResources("random-data-sources/gatunamn_göteborg.txt");
+        txtsStreetNames = txtsStreetNames + utils.readFileFromResources("random-data-sources/gatunamn_stockholm.txt");
         streetNames = Arrays.stream(txtsStreetNames.split("\n")).filter(row -> row.trim().length() > 0).collect(Collectors.toList());
 
         domains = Arrays.asList("gmail.com", "hotmail.com", "bth.org", "sweden.gov", "icloud.com");
@@ -59,13 +61,13 @@ public class RandomDataGenerator {
         users.stream().forEach(user -> {
             Address address = gen.generateAddress();
             user.setHomeAddress(address.getId());
-            System.out.println(user + " : " + address);
+            // System.out.println(user + " : " + address);
             IntStream.range(0, r.nextInt(5)).forEach(i -> {
                 SupportCase supportCase = gen.generateCaseForUser(user);
-                System.out.println(supportCase);
+                // System.out.println(supportCase);
                 IntStream.range(0, r.nextInt(5)).forEach(x -> {
                     LogMessage logMessage = gen.generateLogMessage(supportCase, users.get(r.nextInt(users.size())));
-                    System.out.println(logMessage);
+                    // System.out.println(logMessage);
                 });
             });
         });

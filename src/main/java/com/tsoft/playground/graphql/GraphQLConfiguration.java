@@ -1,5 +1,6 @@
 package com.tsoft.playground.graphql;
 
+import com.tsoft.playground.utils.Utils;
 import graphql.GraphQL;
 import graphql.execution.instrumentation.tracing.TracingInstrumentation;
 import graphql.schema.GraphQLSchema;
@@ -29,7 +30,8 @@ public class GraphQLConfiguration {
 
     @Bean
     public GraphQL graphQL() throws IOException {
-        return GraphQL.newGraphQL(buildSchema(readSchema())).instrumentation(new TracingInstrumentation()).build();
+        return GraphQL.newGraphQL(buildSchema(readSchema())).build();
+                        //.instrumentation(new TracingInstrumentation()).build();
     }
 
     private GraphQLSchema buildSchema(String sdl) {
@@ -60,11 +62,9 @@ public class GraphQLConfiguration {
     }
 
     private String readSchema() throws IOException {
-        File dot = ResourceUtils.getFile("classpath:.");
-        System.out.println("Resource PATH = " + dot.getAbsolutePath());
-        File graphQLFile = ResourceUtils.getFile("classpath:support.graphqls");
-        String content = new String(Files.readAllBytes(graphQLFile.toPath()));
-        System.out.println("GraphQL : " + content);
+        Utils utils = new Utils();
+        String content = utils.readFileFromResources("support.graphqls");
+        // System.out.println("GraphQL : " + content);
         return content;
     }
 }
