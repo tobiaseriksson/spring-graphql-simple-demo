@@ -46,11 +46,11 @@ public class GraphQLConfiguration {
         RuntimeWiring.Builder wiring = RuntimeWiring.newRuntimeWiring();
         return wiring.type(newTypeWiring("Query").dataFetcher("allUsers", graphQLDataFetchers.allUsers()))
                         .type(newTypeWiring("Query").dataFetcher("user", graphQLDataFetchers.user()))
-                        .type(newTypeWiring("User").dataFetcher("homeAddress", graphQLDataFetchers.addressFromUser()))
-                        .type(newTypeWiring("User").dataFetcher("supportCases", graphQLDataFetchers.supportCasesFromUser()))
                         .type(newTypeWiring("Query").dataFetcher("allSupportCases", graphQLDataFetchers.allSupportCases()))
                         .type(newTypeWiring("Query").dataFetcher("supportCase", graphQLDataFetchers.supportCase()))
                         .type(newTypeWiring("Query").dataFetcher("someSupportCases", graphQLDataFetchers.someSupportCases()))
+                        .type(newTypeWiring("User").dataFetcher("homeAddress", graphQLDataFetchers.addressFromUser()))
+                        .type(newTypeWiring("User").dataFetcher("supportCases", graphQLDataFetchers.supportCasesFromUser()))
                         .type(newTypeWiring("SupportCase").dataFetcher("logMessages", graphQLDataFetchers.logMessagesFromSupportCase()))
                         .type(newTypeWiring("SupportCase").dataFetcher("createdBy", graphQLDataFetchers.userFromCase()))
                         .type(newTypeWiring("LogMessage").dataFetcher("createdBy", graphQLDataFetchers.userFromLogMessage()))

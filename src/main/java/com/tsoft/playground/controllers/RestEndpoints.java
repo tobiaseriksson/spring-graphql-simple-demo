@@ -81,6 +81,14 @@ public class RestEndpoints implements ApplicationListener<ContextRefreshedEvent>
         return addressDAO.getById(user.getHomeAddress());
     }
 
+    @GetMapping("/address/{id}")
+    public Address address(@PathVariable(value = "id") Integer id) {
+        if (id == null) {
+            return null;
+        }
+        return addressDAO.getById(id.toString());
+    }
+
     @GetMapping("/address")
     public Address addressForUser2(@RequestParam(required = true, value = "user-id") Integer userId) {
         if (userId == null) {
