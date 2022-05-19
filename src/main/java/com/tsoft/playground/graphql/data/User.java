@@ -12,6 +12,11 @@ import lombok.ToString;
  * lastname: String
  * homeAddress: Address
  * email: Email
+ * shoeSize: Int
+ * favouriteColor: String
+ * luckyNumber: Int
+ * dateOfBirth: String
+ * lastLogIn: String
  * }
  */
 @Data
@@ -28,4 +33,14 @@ public class User {
     String homeAddress;
 
     String email;
+
+    int shoeSize;
+
+    String favouriteColor;
+
+    int luckyNumber;
+
+    String dateOfBirth;
+
+    String lastLogIn;
 }

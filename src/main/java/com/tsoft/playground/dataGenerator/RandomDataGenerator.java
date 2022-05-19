@@ -9,6 +9,7 @@ import com.tsoft.playground.graphql.data.User;
 import com.tsoft.playground.utils.Utils;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
 import java.time.ZonedDateTime;
 import java.util.Arrays;
 import java.util.List;
@@ -32,6 +33,8 @@ public class RandomDataGenerator {
 
     private final List<String> domains;
 
+    private final List<String> colors;
+
     Random random = new Random();
 
     Utils utils = new Utils();
@@ -52,6 +55,8 @@ public class RandomDataGenerator {
         streetNames = Arrays.stream(txtsStreetNames.split("\n")).filter(row -> row.trim().length() > 0).collect(Collectors.toList());
 
         domains = Arrays.asList("gmail.com", "hotmail.com", "bth.org", "sweden.gov", "icloud.com");
+
+        colors = Arrays.asList("red", "green", "blue", "yellow", "magenta", "black", "white", "pink" );
     }
 
     public static void main(String[] args) {
@@ -88,12 +93,12 @@ public class RandomDataGenerator {
      * @return
      */
     public String zipCode() {
-        int zipcode = 1000 + random.nextInt(8999);
+        int zipcode = 1000 + r(8999);
         return "" + zipcode;
     }
 
     public String street() {
-        return pickRandom(streetNames) + " " + random.nextInt(100);
+        return pickRandom(streetNames) + " " + r(100);
     }
 
     public String city() {
@@ -112,15 +117,34 @@ public class RandomDataGenerator {
         return pickRandom(domains);
     }
 
+    public String color() {
+        return pickRandom(colors);
+    }
+
+    public int shoeSize() { return 30+r(20); }
+
     public String email(String fn, String ln, String domain) {
         return String.format("%s.%s@%s", fn, ln, domain);
+    }
+
+    public int luckyNumber() { return 1+r(100); }
+
+    public int r(int max) { return random.nextInt(max); }
+
+    public String dateOfBirth() {
+        return LocalDate.of( 1970+r(50), 1+r(12), 1+r(28)).toString();
+    }
+
+    public String lastLogin() {
+        return LocalDate.now().minusDays( r(200 ) ).toString();
     }
 
     public List<User> generateNUsers(int N) {
         return IntStream.range(1, N).mapToObj(r -> {
             String fn = firstName();
             String ln = lastName();
-            return new User(uniqueId(), fn, ln, null, email(fn, ln, domain()));
+            return new User(uniqueId(), fn, ln, null, email(fn, ln, domain()), shoeSize(), color(), luckyNumber(),
+                            dateOfBirth(), lastLogin() );
         }).collect(Collectors.toList());
     }
 

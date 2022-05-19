@@ -16,6 +16,11 @@ type User {
     lastname: String
     homeAddress: Address
     email: Email
+    shoeSize: Int
+    favouriteColor: String
+    luckyNumber: Int
+    dateOfBirth: String
+    lastLogIn: String
     supportCases(limit:Int, priority:String): [SupportCase]
 }
 
@@ -34,20 +39,6 @@ type LogMessage {
     createdDate: String
     createdBy: User
     txt: String
-}
-
-input LogMessageInput {
-    txt: String
-    belongToCase: ID!
-    createdBy: ID!
-}
-
-input SupportCaseInput {
-    priority: String!
-    title: String!
-    text: String!
-    email: Email!
-    createdBy: ID!
 }
 
 
@@ -75,6 +66,21 @@ type Success implements DemoResponse {
 type Failure implements DemoResponse {
     message: String
     errorCode: Int
+}
+
+
+input LogMessageInput {
+    txt: String
+    belongToCase: ID!
+    createdBy: ID!
+}
+
+input SupportCaseInput {
+    priority: String!
+    title: String!
+    text: String!
+    email: Email!
+    createdBy: ID!
 }
 
 type Mutation {
