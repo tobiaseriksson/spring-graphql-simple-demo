@@ -2,7 +2,6 @@ package com.tsoft.playground.graphql;
 
 import com.tsoft.playground.utils.Utils;
 import graphql.GraphQL;
-import graphql.execution.instrumentation.tracing.TracingInstrumentation;
 import graphql.schema.GraphQLSchema;
 import graphql.schema.idl.RuntimeWiring;
 import graphql.schema.idl.SchemaGenerator;
@@ -11,12 +10,8 @@ import graphql.schema.idl.TypeDefinitionRegistry;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.util.ResourceUtils;
 
-import java.io.File;
 import java.io.IOException;
-import java.nio.file.Files;
-
 import static graphql.schema.idl.TypeRuntimeWiring.newTypeWiring;
 
 @Configuration
