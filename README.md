@@ -243,4 +243,19 @@ The very simple http client applicatin can be found in HttpClient.java
 
 ## Building & Running
 Well...
-Run from within IntelliJ, nothing special to consider 
+Run from within IntelliJ, nothing special to consider
+
+## Monitoring JVM for Performance / Stability
+Docker compose file in the docker directory
+> docker-compose up
+
+go to localhost:9090 for Prometheus
+check that you have data , input a query like "jvm" something and if something is found you have data
+
+go to localost:3000 for Grafana
+Configure Prometheus as DataSource
+Import Grafana config : 12900
+Voila! you are done!
+
+I followed these instructions https://betterprogramming.pub/how-to-monitor-a-spring-boot-app-with-prometheus-and-grafana-22e2338f97fc
+
