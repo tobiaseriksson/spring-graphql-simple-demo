@@ -43,4 +43,12 @@ public class User {
     String dateOfBirth;
 
     String lastLogIn;
+
+    String sex;
+
+    String race;
+
+    String maritalStatus;
+
+    String education;
 }

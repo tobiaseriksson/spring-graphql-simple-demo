@@ -7,6 +7,7 @@ import com.tsoft.playground.graphql.data.LogMessage;
 import com.tsoft.playground.graphql.data.SupportCase;
 import com.tsoft.playground.graphql.data.User;
 import com.tsoft.playground.utils.Utils;
+import net.datafaker.Faker;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
@@ -39,7 +40,10 @@ public class RandomDataGenerator {
 
     Utils utils = new Utils();
 
+    Faker faker = new Faker();
+
     public RandomDataGenerator() {
+
         String txtFirstNames = utils.readFileFromResources("random-data-sources/firstnames_boys.txt");
         txtFirstNames = txtFirstNames + "\n" + utils.readFileFromResources("random-data-sources/firstnames_girls.txt");
         firstNames = Arrays.stream(txtFirstNames.split("\n")).filter(row -> row.trim().length() > 0).collect(Collectors.toList());
@@ -139,12 +143,20 @@ public class RandomDataGenerator {
         return LocalDate.now().minusDays( r(200 ) ).toString();
     }
 
+    String sex = faker.demographic().sex();
+
+    String race = faker.demographic().race();
+
+    String maritalStatus = faker.demographic().maritalStatus();
+
+    String education = faker.demographic().educationalAttainment();
+
     public List<User> generateNUsers(int N) {
         return IntStream.range(1, N).mapToObj(r -> {
             String fn = firstName();
             String ln = lastName();
             return new User(uniqueId(), fn, ln, null, email(fn, ln, domain()), shoeSize(), color(), luckyNumber(),
-                            dateOfBirth(), lastLogin() );
+                            dateOfBirth(), lastLogin(), sex, race, maritalStatus, education );
         }).collect(Collectors.toList());
     }
 
@@ -170,7 +182,8 @@ public class RandomDataGenerator {
         int currentCount = counter.incrementAndGet();
         String id = uniqueId(); // UUID.randomUUID().toString();
         ZonedDateTime now = ZonedDateTime.now();
-        return new LogMessage(id, "lorem ipsum " + currentCount, supportCase.getId(), user.getId(), now.toString());
+        String chuckNorrisFact = faker.chuckNorris().fact();
+        return new LogMessage(id, chuckNorrisFact, supportCase.getId(), user.getId(), now.toString());
     }
 
 }

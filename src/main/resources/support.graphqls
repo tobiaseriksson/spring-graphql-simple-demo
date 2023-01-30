@@ -22,6 +22,10 @@ type User {
     dateOfBirth: String
     lastLogIn: String
     supportCases(limit:Int, priority:String): [SupportCase]
+    sex: String
+    race: String
+    maritalStatus: String
+    education: String
 }
 
 type Address {
