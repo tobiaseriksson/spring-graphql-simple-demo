@@ -6,7 +6,7 @@ There is also a http client included to show how you would make a REST call.
 
 ## REST Endpoints
 Comparing REST to Graphql a little, here are some REST endpoints that can do similar things as the GraphQL variant 
-(althogh did not implement sparse fields support)
+(although did not implement sparse fields support)
 * GET /api/support-case
 * GET /api/support-case/id
 * GET /api/support-case/id/log-messages
@@ -220,7 +220,7 @@ Body :
 ### Altair
 https://altair.sirmuel.design/
 
-This is a realy good tool that I highly recommend
+This is a really good tool that I highly recommend
 just point the URL to : `http://localhost:8081/graphql`
 ![img.png](altair.png)
 
@@ -239,7 +239,7 @@ public static void main(String[] args) throws IOException, InterruptedException 
 ## Classes and Design
 The Spring Boot application can be found in App.java
 
-The very simple http client applicatin can be found in HttpClient.java
+The very simple http client application can be found in HttpClient.java
 
 ## Building & Running
 Well...
@@ -252,7 +252,7 @@ Docker compose file in the docker directory
 go to localhost:9090 for Prometheus
 check that you have data , input a query like "jvm" something and if something is found you have data
 
-go to localost:3000 for Grafana
+go to localhost:3000 for Grafana
 Configure Prometheus as DataSource
 Import Grafana config : 12900
 Voila! you are done!
