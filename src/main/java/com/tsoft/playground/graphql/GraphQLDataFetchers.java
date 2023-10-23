@@ -34,7 +34,7 @@ public class GraphQLDataFetchers {
     @Autowired
     private UserDAO userDAO;
 
-    private void processField(Field field) {
+    private void logSelectedField(Field field) {
         System.out.println(field);
         if (field.getSelectionSet() == null || field.getSelectionSet().getSelections() == null) {
             return;
@@ -42,7 +42,7 @@ public class GraphQLDataFetchers {
         field.getSelectionSet().getSelections().stream().forEach(s -> {
             if (s instanceof Field) {
                 Field subField = (Field) s;
-                processField(subField);
+                logSelectedField(subField);
             } else {
                 System.err.println("Found something else " + s.toString());
             }
@@ -55,7 +55,7 @@ public class GraphQLDataFetchers {
             System.out.println("*****************************");
             List<Field> fields = dataFetchingEnvironment.getMergedField().getFields();
             fields.stream().forEach(f -> {
-                processField(f);
+                logSelectedField(f);
             });
             return supportCaseDAO.all().stream().collect(Collectors.toList());
         };

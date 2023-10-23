@@ -23,6 +23,8 @@ import org.springframework.web.method.HandlerMethod;
 import org.springframework.web.servlet.mvc.method.RequestMappingInfo;
 import org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerMapping;
 
+import java.util.Arrays;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -48,7 +50,7 @@ public class RestEndpoints implements ApplicationListener<ContextRefreshedEvent>
     public RestEndpoints() {
     }
 
-    @GetMapping("/user")
+    @GetMapping("/users")
     public List<User> user(@RequestParam(required = false, value = "name-contains") String nameContains, @RequestParam(required = false, value = "limit") Integer limit) {
         int max = 1000;
         if (limit != null) {
@@ -61,7 +63,7 @@ public class RestEndpoints implements ApplicationListener<ContextRefreshedEvent>
         }
     }
 
-    @GetMapping("/user/{id}")
+    @GetMapping("/users/{id}")
     public User user(@PathVariable(value = "id") Integer id) {
         if (id == null) {
             return null;
@@ -69,7 +71,7 @@ public class RestEndpoints implements ApplicationListener<ContextRefreshedEvent>
         return userDAO.getById(id.toString());
     }
 
-    @GetMapping("/user/{id}/address")
+    @GetMapping("/users/{id}/address")
     public Address addressForUser(@PathVariable(value = "id") Integer id) {
         if (id == null) {
             return null;
@@ -81,7 +83,7 @@ public class RestEndpoints implements ApplicationListener<ContextRefreshedEvent>
         return addressDAO.getById(user.getHomeAddress());
     }
 
-    @GetMapping("/address/{id}")
+    @GetMapping("/addresses/{id}")
     public Address address(@PathVariable(value = "id") Integer id) {
         if (id == null) {
             return null;
@@ -89,19 +91,25 @@ public class RestEndpoints implements ApplicationListener<ContextRefreshedEvent>
         return addressDAO.getById(id.toString());
     }
 
-    @GetMapping("/address")
-    public Address addressForUser2(@RequestParam(required = true, value = "user-id") Integer userId) {
-        if (userId == null) {
-            return null;
+    @GetMapping("/addresses")
+    public List<Address> addressForUser2(@RequestParam(required = false, value = "user-id") Integer userId,
+                    @RequestParam(required = false, value = "limit") Integer limit ){
+        if (userId != null) {
+            User user = userDAO.getById(userId.toString());
+            if (user == null) {
+                return null;
+            }
+            Address oneAddress = addressDAO.getById(user.getHomeAddress());
+            return new LinkedList<Address>(Arrays.asList(oneAddress));
         }
-        User user = userDAO.getById(userId.toString());
-        if (user == null) {
-            return null;
+        var result = addressDAO.all();
+        if( limit != null ) {
+            return result.stream().limit(limit).collect(Collectors.toList());
         }
-        return addressDAO.getById(user.getHomeAddress());
+        return result;
     }
 
-    @GetMapping("/support-case/{id}")
+    @GetMapping("/support-cases/{id}")
     public SupportCase supportCases(@PathVariable(value = "id") Integer id) {
         if (id == null) {
             return null;
@@ -109,7 +117,7 @@ public class RestEndpoints implements ApplicationListener<ContextRefreshedEvent>
         return supportCaseDAO.getById(id.toString());
     }
 
-    @GetMapping("/support-case")
+    @GetMapping("/support-cases")
     public List<SupportCase> supportCasesByTitle(@RequestParam(required = false, value = "title-contains") String titleContains, @RequestParam(required = false, value = "limit") Integer limit) {
         int max = 1000;
         if (limit != null) {
@@ -122,7 +130,7 @@ public class RestEndpoints implements ApplicationListener<ContextRefreshedEvent>
         }
     }
 
-    @GetMapping("/support-case/{id}/log-messages")
+    @GetMapping("/support-cases/{id}/log-messages")
     public List<LogMessage> logMessagesForCase(@PathVariable(value = "id") String id) {
         return logMessageDAO.getBySupportCase(id);
     }
