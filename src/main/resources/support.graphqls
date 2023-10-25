@@ -50,7 +50,7 @@ type Query {
     # Returns a User with id
     user(id:ID!):User
     # Returns ALL Users, (optionally limited by limit)
-    allUsers(limit:Int):[User]
+    allUsers(limit:Int,contains:String):[User]
     # Returns SupportCase with id
     supportCase( id: ID! ): SupportCase
     # This will return ALL the Support Cases there are

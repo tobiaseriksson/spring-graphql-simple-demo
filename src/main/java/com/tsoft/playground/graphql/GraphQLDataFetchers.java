@@ -131,6 +131,11 @@ public class GraphQLDataFetchers {
             if (limit != null) {
                 max = limit;
             }
+            String nameContains = dataFetchingEnvironment.getArgument("contains");
+            if( nameContains != null ) {
+                return userDAO.all().stream().filter( u -> u.getFirstname().toLowerCase().contains(nameContains.toLowerCase())).collect(
+                                Collectors.toList());
+            }
             return userDAO.all().stream().limit(max);
         };
     }
